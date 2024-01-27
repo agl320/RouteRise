@@ -25,7 +25,7 @@ class GenerateRoutes():
     closeGraph (boolean): for displaying matplotlib graph for debugging
 
     """
-    def __init__(self, xCoord, yCoord, targetDistance, marginOfErrorDist, targetElevation = 500, marginOfErrorEl = 100, searchDist = 1000, networkType = "all_private", closeGraph = False):
+    def __init__(self, xCoord, yCoord, targetDistance, marginOfErrorDist, targetElevation = 500, marginOfErrorEl = 100, searchDist = 1000, networkType = "all_private"):
 
         self.xCoord = xCoord 
         self.yCoord = yCoord
@@ -155,18 +155,21 @@ class GenerateRoutes():
 
         # display(edges["osmid"][7483134363, :, 0])
 
-        if not closeGraph:
-            plt.show()
+        # if not closeGraph:
+        #     plt.show()
         
     
     def getFinalRoutes(self):
         return {"routes": self.finalRoutes, "numberOfRoutes": len(self.finalRoutes)}
 
     def getFinalRoutes(self, numberOfRoutes):
-        if numberOfRoutes >= len(self.finalRoutes):
-            self.getFinalRoutes()
+        if len(self.finalRoutes)==0:
+            return {"routes":[], "numberOfRoutes":0}
         else:
-            return {"routes": random.sample(self.finalRoutes, numberOfRoutes), "numberOfRoutes": numberOfRoutes}
+            if numberOfRoutes >= len(self.finalRoutes):
+                self.getFinalRoutes()
+            else:
+                return {"routes": random.sample(self.finalRoutes, numberOfRoutes), "numberOfRoutes": numberOfRoutes}
 
     def calcDistance(self, routeArr):
         lengthTotal = 0

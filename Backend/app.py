@@ -7,16 +7,19 @@ app = Flask(__name__)
 CORS(app)
 
 
-@app.route('/get/<lat>/<lon>/<dist>/<marginErr>', methods=['GET'])
-def getRoutes(lat, lon, dist, marginErr):
+
+# /get/49.2317256/-122.8927259/200/100/1
+# @app.route('/get/<lat>/<lon>/<dist>/<marginErr>', methods=['GET'])
+@app.route('/get/<lat>/<lon>/<dist>/<marginErr>/<numberOfRoutes>', methods=['GET'])
+def getRoutes(lat, lon, dist, marginErr, numberOfRoutes=5):
     # Example with a set
-    print(type(lat), type(lon), type(dist), type(marginErr))
+    # print(type(lat), type(lon), type(dist), type(marginErr), type(numberOfRoutes))
     
     # print()
-    obj = GenerateRoutes(float(lon), float(lat), float(dist), float(marginErr))
-    print(obj.getFinalRoutes(5))
+    obj = GenerateRoutes(xCoord=float(lon), yCoord=float(lat), targetDistance=float(dist), marginOfErrorDist=float(marginErr))
+    finalRoutes = obj.getFinalRoutes(numberOfRoutes=int(numberOfRoutes))
 
-    return(jsonify(lat, lon))
+    return(jsonify(finalRoutes))
 
 @app.route('/lab/<username>')
 def bye(username):
